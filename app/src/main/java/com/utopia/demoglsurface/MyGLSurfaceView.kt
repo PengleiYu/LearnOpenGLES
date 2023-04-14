@@ -3,13 +3,14 @@ package com.utopia.demoglsurface
 import android.content.Context
 import android.opengl.GLSurfaceView
 import android.view.MotionEvent
+import com.utopia.demoglsurface.render.NewTriangleRender
 
 class MyGLSurfaceView(context: Context?) : GLSurfaceView(context) {
     private val render: Renderer
 
     init {
         setEGLContextClientVersion(2)
-        render = RotateTriangleRender()
+        render = NewTriangleRender()
         setRenderer(render)
 //        renderMode = RENDERMODE_WHEN_DIRTY
     }
