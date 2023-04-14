@@ -9,9 +9,9 @@ class MyGLSurfaceView(context: Context?) : GLSurfaceView(context) {
 
     init {
         setEGLContextClientVersion(2)
-        render = PointRender()
+        render = RotateTriangleRender()
         setRenderer(render)
-        renderMode = RENDERMODE_WHEN_DIRTY
+//        renderMode = RENDERMODE_WHEN_DIRTY
     }
 
     private var previousX: Float = 0f

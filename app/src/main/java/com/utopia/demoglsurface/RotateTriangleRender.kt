@@ -1,8 +1,10 @@
 package com.utopia.demoglsurface
 
+import android.icu.util.TimeUnit
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
+import android.os.SystemClock
 import android.util.Log
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -12,8 +14,6 @@ import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
 class RotateTriangleRender : GLSurfaceView.Renderer {
-    @Volatile
-    var angle: Float = 0f
 
     private lateinit var mTriangle: Triangle
     private lateinit var mSquare: Square
@@ -45,8 +45,8 @@ class RotateTriangleRender : GLSurfaceView.Renderer {
         val scratch = FloatArray(16)
 
         // Create a rotation transformation for the triangle
-//        val time = SystemClock.uptimeMillis() % 4000L
-//        val angle = 0.090f * time.toInt()
+        val time = SystemClock.uptimeMillis() % 4000L
+        val angle = 0.090f * time.toInt()
         Matrix.setRotateM(rotationMatrix, 0, angle, 0f, 0f, -1.0f)
 
         // Combine the rotation matrix with the projection and camera view
@@ -128,38 +128,7 @@ class RotateTriangleRender : GLSurfaceView.Renderer {
                         "  gl_FragColor = vColor;" +
                         "}"
 
-            private var mProgram: Int
-
-            init {
-
-                val vertexShader: Int = loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode)
-                val fragmentShader: Int = loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode)
-
-                // create empty OpenGL ES Program
-                mProgram = GLES20.glCreateProgram().also {
-
-                    // add the vertex shader to program
-                    GLES20.glAttachShader(it, vertexShader)
-
-                    // add the fragment shader to program
-                    GLES20.glAttachShader(it, fragmentShader)
-
-                    // creates OpenGL ES program executables
-                    GLES20.glLinkProgram(it)
-                }
-            }
-
-            fun loadShader(type: Int, shaderCode: String): Int {
-
-                // create a vertex shader type (GLES20.GL_VERTEX_SHADER)
-                // or a fragment shader type (GLES20.GL_FRAGMENT_SHADER)
-                return GLES20.glCreateShader(type).also { shader ->
-
-                    // add the source code to the shader and compile it
-                    GLES20.glShaderSource(shader, shaderCode)
-                    GLES20.glCompileShader(shader)
-                }
-            }
+            private var mProgram: Int = createShaderProgramStr(vertexShaderCode, fragmentShaderCode)
 
             private var positionHandle: Int = 0
             private var mColorHandle: Int = 0

@@ -16,7 +16,7 @@ class PointRender : GLSurfaceView.Renderer {
     override fun onDrawFrame(gl: GL10?) {
         glClear(GL_COLOR_BUFFER_BIT)
 
-        val program = createProgram()
+        val program = createShaderProgramStr(vs, fs)
 
         glUseProgram(program)
 
@@ -24,23 +24,6 @@ class PointRender : GLSurfaceView.Renderer {
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
-    }
-
-    private fun createProgram(): Int {
-        val vertShader = glCreateShader(GL_VERTEX_SHADER)
-        glShaderSource(vertShader, vs)
-        glCompileShader(vertShader)
-
-        val fragShader = glCreateShader(GL_FRAGMENT_SHADER)
-        glShaderSource(fragShader, fs)
-        glCompileShader(fragShader)
-
-        val program = glCreateProgram()
-        glAttachShader(program, vertShader)
-        glAttachShader(program, fragShader)
-        glLinkProgram(program)
-
-        return program
     }
 
     companion object {
