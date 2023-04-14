@@ -2,6 +2,9 @@ package com.utopia.demoglsurface
 
 import android.opengl.GLES32.*
 import android.util.Log
+import java.nio.Buffer
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import java.nio.IntBuffer
 
 fun createShaderProgramStr(vertxShader: String, fragShader: String): Int {
@@ -73,6 +76,22 @@ private fun checkOpenGLError(): Boolean {
         glErr = glGetError()
     }
     return foundErr
+}
+
+fun FloatArray.toBuffer(): Buffer {
+    return ByteBuffer.allocateDirect(size * 4)
+        .order(ByteOrder.nativeOrder())
+        .asFloatBuffer()
+        .put(this)
+        .position(0)
+}
+
+fun ShortArray.toBuffer(): Buffer {
+    return ByteBuffer.allocateDirect(size * 2)
+        .order(ByteOrder.nativeOrder())
+        .asShortBuffer()
+        .put(this)
+        .position(0)
 }
 
 private const val TAG = "Utils"
